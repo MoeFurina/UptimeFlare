@@ -1,75 +1,75 @@
 import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
 
 const pageConfig: PageConfig = {
-  // Title for your status page
-  title: "lyc8503's Status Page",
-  // Links shown at the header of your status page, could set `highlight` to `true`
+  // 状态页标题
+  title: "MoeFurina's 状态页面",
+  // 状态页头部显示的链接，可设置 `highlight` 为 `true` 来高亮显示
   links: [
-    { link: 'https://github.com/lyc8503', label: 'GitHub' },
-    { link: 'https://blog.lyc8503.net/', label: 'Blog' },
-    { link: 'mailto:me@lyc8503.net', label: 'Email Me', highlight: true },
+    { link: 'https://github.com/moefurina', label: 'GitHub' },
+    { link: 'https://www.focalors.ltd/', label: 'Blog' },
+    { link: 'mailto:me@focalors.ltd', label: 'Email Me', highlight: true },
   ],
-  // [OPTIONAL] Group your monitors
-  // If not specified, all monitors will be shown in a single list
-  // If specified, monitors will be grouped and ordered, not-listed monitors will be invisble (but still monitored)
+  // [可选] 监控项分组配置
+  // 如果不指定，所有监控项将显示在同一个列表中
+  // 如果指定，监控项将按分组显示，未列出的监控项将被隐藏（但仍会被监控）
   group: {
-    '🌐 Public (example group name)': ['foo_monitor', 'bar_monitor', 'more monitor ids...'],
-    '🔐 Private': ['test_tcp_monitor'],
+    '🌐 公开服务': ['foo_monitor', 'bar_monitor', 'more monitor ids...'],
+    '🔐 私有服务': ['test_tcp_monitor'],
   },
 }
 
 const workerConfig: WorkerConfig = {
-  // Write KV at most every 3 minutes unless the status changed
+  // 状态未变化时，KV存储最多每3分钟写入一次
   kvWriteCooldownMinutes: 3,
-  // Enable HTTP Basic auth for status page & API by uncommenting the line below, format `<USERNAME>:<PASSWORD>`
+  // 取消下面行的注释可为状态页和API启用HTTP基础认证，格式为`<用户名>:<密码>`
   // passwordProtection: 'username:password',
-  // Define all your monitors here
+  // 在此定义所有监控项
   monitors: [
-    // Example HTTP Monitor
+    // HTTP监控示例
     {
-      // `id` should be unique, history will be kept if the `id` remains constant
-      id: 'foo_monitor',
-      // `name` is used at status page and callback message
-      name: 'My API Monitor',
-      // `method` should be a valid HTTP Method
+      // `id` 必须唯一，保持相同id可以保留历史记录
+      id: 'indexpage',
+      // `name` 用于状态页和回调消息
+      name: '个人主页',
+      // `method` 应为有效的HTTP方法
       method: 'POST',
-      // `target` is a valid URL
-      target: 'https://example.com',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'This is a tooltip for this monitor',
-      // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
-      statusPageLink: 'https://example.com',
-      // [OPTIONAL] `hideLatencyChart` will hide status page latency chart if set to true
+      // `target` 应为有效的URL
+      target: 'https://www.focalors.ltd',
+      // [可选] `tooltip` 仅在状态页显示提示信息
+      tooltip: '我的个人主页',
+      // [可选] `statusPageLink` 仅在状态页提供可点击链接
+      statusPageLink: 'https://www.focalors.ltd',
+      // [可选] `hideLatencyChart` 设为true可隐藏状态页的延迟图表
       hideLatencyChart: false,
-      // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
+      // [可选] `expectedCodes` 是可接受的HTTP响应码数组，未指定时默认为2xx
       expectedCodes: [200],
-      // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
+      // [可选] `timeout` 超时时间(毫秒)，未指定时默认为10000
       timeout: 10000,
-      // [OPTIONAL] headers to be sent
+      // [可选] 请求头设置
       headers: {
         'User-Agent': 'Uptimeflare',
         Authorization: 'Bearer YOUR_TOKEN_HERE',
       },
-      // [OPTIONAL] body to be sent
+      // [可选] 请求体内容
       body: 'Hello, world!',
-      // [OPTIONAL] if specified, the response must contains the keyword to be considered as operational.
+      // [可选] 如果指定，响应必须包含该关键词才被视为正常运行
       responseKeyword: 'success',
-      // [OPTIONAL] if specified, the response must NOT contains the keyword to be considered as operational.
+      // [可选] 如果指定，响应不得包含该关键词才被视为正常运行
       responseForbiddenKeyword: 'bad gateway',
-      // [OPTIONAL] if specified, will call the check proxy to check the monitor, mainly for geo-specific checks
-      // refer to docs https://github.com/lyc8503/UptimeFlare/wiki/Check-proxy-setup before setting this value
-      // currently supports `worker://` and `http(s)://` proxies
+      // [可选] 如果指定，将通过检查代理来检查监控项，主要用于地理位置特定检查
+      // 设置前请参考文档 https://github.com/lyc8503/UptimeFlare/wiki/Check-proxy-setup
+      // 当前支持 `worker://` 和 `http(s)://` 代理
       checkProxy: 'https://xxx.example.com OR worker://weur',
-      // [OPTIONAL] if true, the check will fallback to local if the specified proxy is down
+      // [可选] 如果为true，当指定代理不可用时将回退到本地检查
       checkProxyFallback: true,
     },
-    // Example TCP Monitor
+    // TCP监控示例
     {
-      id: 'test_tcp_monitor',
-      name: 'Example TCP Monitor',
-      // `method` should be `TCP_PING` for tcp monitors
+      id: 'SPlayer',
+      name: '第三方网易云音乐播放器',
+      // TCP监控的 `method` 应为 `TCP_PING`
       method: 'TCP_PING',
-      // `target` should be `host:port` for tcp monitors
+      // TCP监控的 `target` 应为 `主机:端口` 格式
       target: '1.2.3.4:22',
       tooltip: 'My production server SSH',
       statusPageLink: 'https://example.com',
@@ -77,19 +77,19 @@ const workerConfig: WorkerConfig = {
     },
   ],
   notification: {
-    // [Optional] apprise API server URL
-    // if not specified, no notification will be sent
+    // [可选] apprise API服务器URL
+    // 如果不指定，将不会发送通知
     appriseApiServer: 'https://apprise.example.com/notify',
-    // [Optional] recipient URL for apprise, refer to https://github.com/caronc/apprise
-    // if not specified, no notification will be sent
+    // [可选] apprise的接收者URL，参考 https://github.com/caronc/apprise
+    // 如果不指定，将不会发送通知
     recipientUrl: 'tgram://bottoken/ChatID',
-    // [Optional] timezone used in notification messages, default to "Etc/GMT"
+    // [可选] 通知消息使用的时区，默认为"Etc/GMT"
     timeZone: 'Asia/Shanghai',
-    // [Optional] grace period in minutes before sending a notification
-    // notification will be sent only if the monitor is down for N continuous checks after the initial failure
-    // if not specified, notification will be sent immediately
+    // [可选] 发送通知前的宽限期(分钟)
+    // 只有在监控项连续N次检查失败后才会发送通知
+    // 如果不指定，监控失败时将立即发送通知
     gracePeriod: 5,
-    // [Optional] disable notification for monitors with specified ids
+    // [可选] 跳过指定id监控项的通知
     skipNotificationIds: ['foo_monitor', 'bar_monitor'],
   },
   callbacks: {
@@ -101,10 +101,10 @@ const workerConfig: WorkerConfig = {
       timeNow: number,
       reason: string
     ) => {
-      // This callback will be called when there's a status change for any monitor
-      // Write any Typescript code here
-      // This will not follow the grace period settings and will be called immediately when the status changes
-      // You need to handle the grace period manually if you want to implement it
+      // 当任何监控项状态变化时调用此回调
+      // 在此处编写任意Typescript代码
+      // 此回调不受宽限期设置影响，状态变化时将立即调用
+      // 如需实现宽限期，需要手动处理
     },
     onIncident: async (
       env: any,
@@ -113,34 +113,34 @@ const workerConfig: WorkerConfig = {
       timeNow: number,
       reason: string
     ) => {
-      // This callback will be called EVERY 1 MINTUE if there's an on-going incident for any monitor
-      // Write any Typescript code here
+      // 当任何监控项处于故障状态时，每分钟调用一次此回调
+      // 在此处编写任意Typescript代码
     },
   },
 }
 
-// You can define multiple maintenances here
-// During maintenance, an alert will be shown at status page
-// Also, related downtime notifications will be skipped (if any)
-// Of course, you can leave it empty if you don't need this feature
+// 可在此定义多个维护计划
+// 维护期间，状态页将显示警告信息
+// 相关故障通知将被跳过(如有)
+// 如果不需要此功能，可留空
 // const maintenances: MaintenanceConfig[] = []
 const maintenances: MaintenanceConfig[] = [
   {
-    // [Optional] Monitor IDs to be affected by this maintenance
+    // [可选] 受此维护影响的监控项ID
     monitors: ['foo_monitor', 'bar_monitor'],
-    // [Optional] default to "Scheduled Maintenance" if not specified
+    // [可选] 未指定时默认为"Scheduled Maintenance"
     title: 'Test Maintenance',
-    // Description of the maintenance, will be shown at status page
+    // 维护描述，将显示在状态页
     body: 'This is a test maintenance, server software upgrade',
-    // Start time of the maintenance, in UNIX timestamp or ISO 8601 format
+    // 维护开始时间，UNIX时间戳或ISO 8601格式
     start: '2025-04-27T00:00:00+08:00',
-    // [Optional] end time of the maintenance, in UNIX timestamp or ISO 8601 format
-    // if not specified, the maintenance will be considered as on-going
+    // [可选] 维护结束时间，UNIX时间戳或ISO 8601格式
+    // 如果不指定，维护将被视为正在进行中
     end: '2025-04-30T00:00:00+08:00',
-    // [Optional] color of the maintenance alert at status page, default to "yellow"
+    // [可选] 状态页维护警告的颜色，默认为"yellow"
     color: 'blue',
   },
 ]
 
-// Don't forget this, otherwise compilation fails.
+// 不要忘记导出，否则编译会失败
 export { pageConfig, workerConfig, maintenances }
